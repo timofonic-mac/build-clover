@@ -7,14 +7,14 @@ github-release release \
   -r Clover \
   -t ${VERSION} \
   -n ${VERSION} \
-  -d "${NOW_DATE} Automated Build kexts By Travis CI"
+  -d "${NOW_DATE} Automated Build By Travis CI"
 
 github-release release \
   -u acer-k50 \
   -r build-clover \
   -t ${VERSION} \
   -n ${VERSION} \
-  -d "${NOW_DATE} Automated Build kexts By Travis CI"
+  -d "${NOW_DATE} Automated Build By Travis CI"
 
 github-release upload \
   -u acer-k50 \

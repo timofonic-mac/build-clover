@@ -17,14 +17,13 @@ before_script:
 - ln -s ${TRAVIS_BUILD_DIR}/src ~/src
 - cd ~
 - git clone -b master --depth=1 git@github.com:acer-k50/Clover.git
-# - export REMOTE_REV=`svn info svn://svn.code.sf.net/p/cloverefiboot/code | grep "Revision" | tr -cd [:digit:]`
 script:
 - ${TRAVIS_BUILD_DIR}/Build_Clover.command
+after_success:
 - cd ~/src/edk2/Clover/CloverPackage/sym
 - ls *.zip > version.txt
 - sed -i "" "s/.zip//g" version.txt
 - export VERSION=`cat version.txt`
-after_success:
 - cd ~/Clover
 - git tag ${VERSION}
 - git push origin --tags
@@ -34,17 +33,6 @@ after_success:
 - git tag ${VERSION}
 - git push origin --tags
 - ${TRAVIS_BUILD_DIR}/release.sh
-# - cd ~/build-clover-log
-# - git add .
-# - export COMMIT=`date "+%F %T"`
-# - git commit -m ${COMMIT}
-# - git push -f origin master
-# after_failure:
-# - cd ~/build-clover-log
-# - git add .
-# - COMMIT=`date "+%F %T"`
-# - git commit -m "${COMMIT}"
-# - git push -f origin master
 addons:
   ssh_known_hosts:
   - github.com
