@@ -573,7 +573,6 @@ done
 printf '? '
 sleep 5
 opt=1
-echo $opt
 case $opt in
 	1 ) MAKEPKG_CMD="make pkg";;
 	2 ) MAKEPKG_CMD="make slimpkg1";;
@@ -1220,8 +1219,7 @@ if [[ -d "${DIR_MAIN}/edk2/Clover/.svn" ]] ; then
 	# printf '? ' && read opt
 	printf '? '
 	sleep 5
-	opt=6
-	echo $opt
+	opt=2
 	if IsNumericOnly $opt; then
 		((opt-=1))
 		if [[ "$opt" -ge "0" && "$opt" -le "$lastIndex" ]]; then choice="$(echo ${options[$opt]})"; fi
@@ -1376,7 +1374,8 @@ if [[ "$BUILD_FLAG" == NO ]]; then
 	ClearScreen
 	# print updated remote and local revision
 	if [[ -d "${DIR_MAIN}"/edk2 ]]; then getRev; printRevisions; fi;
-	build
+	# build
+	exit 0
 fi
 
 set -e
