@@ -1,0 +1,56 @@
+language: objective-c
+osx_image: xcode9
+sudo: required
+cache:
+  directories:
+  - src/opt
+before_script:
+- brew install github-release
+- brew install nasm
+- github-release --help
+- nasm --version
+- openssl aes-256-cbc -K $encrypted_bef797ac2590_key -iv $encrypted_bef797ac2590_iv
+  -in .travis/khs1994-robot.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- git config --global user.name "khs1994-merge-robot"
+- git config --global user.email "ai@khs1994.com"
+- ln -s ${TRAVIS_BUILD_DIR}/src ~/src
+- cd ~
+- git clone -b master --depth=1 git@github.com:acer-k50/Clover.git
+# - export REMOTE_REV=`svn info svn://svn.code.sf.net/p/cloverefiboot/code | grep "Revision" | tr -cd [:digit:]`
+script:
+- ${TRAVIS_BUILD_DIR}/Build_Clover.command
+- cd ~/src/edk2/Clover/CloverPackage/sym
+- ls *.zip > version.txt
+- sed -i "" "s/.zip//g" version.txt
+- export VERSION=`cat version.txt`
+after_success:
+- cd ~/Clover
+- git tag ${VERSION}
+- git push origin --tags
+- cd ${TRAVIS_BUILD_DIR}
+- git remote rm origin
+- git remote add origin git@github.com:acer-k50/build-clover.git
+- git tag ${VERSION}
+- git push origin --tags
+- ${TRAVIS_BUILD_DIR}/release.sh
+# - cd ~/build-clover-log
+# - git add .
+# - export COMMIT=`date "+%F %T"`
+# - git commit -m ${COMMIT}
+# - git push -f origin master
+# after_failure:
+# - cd ~/build-clover-log
+# - git add .
+# - COMMIT=`date "+%F %T"`
+# - git commit -m "${COMMIT}"
+# - git push -f origin master
+addons:
+  ssh_known_hosts:
+  - github.com
+branches:
+  only:
+  - master
+env:
+  global:
+  - TZ=Asia/Shanghai
