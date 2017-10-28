@@ -3,7 +3,8 @@ osx_image: xcode9
 sudo: required
 cache:
   directories:
-  - src
+  - $HOME/src
+  timeout: 1000
 before_script:
 - brew install github-release
 - brew install nasm
@@ -14,11 +15,10 @@ before_script:
 - chmod 600 ~/.ssh/id_rsa
 - git config --global user.name "khs1994-merge-robot"
 - git config --global user.email "ai@khs1994.com"
-- ln -s ${TRAVIS_BUILD_DIR}/src ~/src
 - cd ~
 - git clone -b master --depth=1 git@github.com:acer-k50/Clover.git
 script:
-- ${TRAVIS_BUILD_DIR}/Build_Clover.command.update  
+- ${TRAVIS_BUILD_DIR}/Build_Clover.command.update
 - ${TRAVIS_BUILD_DIR}/Build_Clover.command
 after_success:
 - cd ~/src/edk2/Clover/CloverPackage/sym
